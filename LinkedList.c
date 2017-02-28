@@ -9,33 +9,29 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 
-//Main method: Contents of main method used for testing.
-int main(int argc, const char * argv[]) {
-    
-    struct node* head = newList(5);
-    insert(3, head);
-    insert(2, head);
-    insert(7, head);
-    insert(1, head);
-    insert(7, head);
-    printf("Head: %d\nNext: %d\n", head->value, head->next->value);
-    printf("Is 7 in the list? %d\n", lookup(7, head));
-    printf("Is 10 in the list? %d\n", lookup(10, head));
-    printList(head);
-    head = deleteNode(2, head);
-    head = deleteNode(5, head);
-    head = deleteNode(7, head);
-    printList(head);
-    
-    return 0;
-}
-
 //Creates a new list with the head having the given val
 struct node* newList(int val) {
     struct node* head = (struct node*)malloc(sizeof(struct node));
     head->value = val;
     head->next = NULL;
     return head;
+}
+
+//Creates a new list with the head having NO VALUE
+struct node* newListE() {
+    struct node* head = (struct node*)malloc(sizeof(struct node));
+    head->value = NULL;
+    head->next = NULL;
+    return head;
+}
+
+//Frees the list and all its content from memory
+void destoryList(struct node* headNode) {
+    if (headNode->next != NULL) {
+        destoryList(headNode->next);
+    }
+    free(headNode->value);
+    free(headNode);
 }
 
 //Inserts to the end of the list
@@ -47,6 +43,21 @@ void insert(int val, struct node* headNode) {
         headNode->next->next = NULL;
     } else {
         insert(val, headNode->next);
+    }
+}
+
+//Inserts item to start of list
+void prepend(int val, struct node* headNode) {
+    if (headNode->value == NULL) {
+        headNode->value = val;
+        return;
+    } else {
+        struct node* newList = newListE();
+        insert(val, newList);
+        for (; headNode != NULL; headNode = headNode->next) {
+            insert(headNode->symbols, newList);
+        }
+        headNode = newList;
     }
 }
 

@@ -23,7 +23,10 @@ typedef int Boolean;
 #define false 0;
 
 struct node* newList(int val);
+struct node* newListE();
+void destoryList(struct node* headNode);
 void insert(int val, struct node* headNode);
+void prepend(int val struct node* headNode);
 struct node* deleteNode(int val, struct node* headNode);
 Boolean lookup(int val, struct node* headNode);
 void printList(struct node* headNode);
